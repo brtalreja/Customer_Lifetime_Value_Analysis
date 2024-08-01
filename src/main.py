@@ -54,3 +54,23 @@ fig.write_image("../output/customer_acquistion_cost_by_channel.png")
 # Because the email marketing is driving significant customer acquisition at a low cost, it could be a key area to expand.
 # Evaluate Referral and Social Media channels to assess their performance and determine if their CAC can be reduced or if they offer any other strategic benefits.
 
+#Most and Least effective channel at converting customers
+conversion_by_channel = data.groupby('channel')['conversion_rate'].mean().reset_index()
+
+fig = px.bar(conversion_by_channel,
+            x = "channel",
+            y = "conversion_rate",
+            title = "Conversion Rate by Channel",
+            labels = {"conversion_rate": "Conversion rate", "channel": "Channel"})
+
+fig.show()
+
+fig.write_image("../output/conversion_rate_by_channel.png")
+
+#COMMENT: Highest to Lowest conversion rates channels are:
+# Social Media (16.76%) > Referral (12.31%) > Email Marketing (4.38%) >Paid Advertising (1.63%)
+# While the conversion rate for email marketing might be lower than referral and social media conversion rate, it is still moderately effective in the overall marketing strategy.
+# The lowest conversion rate for Paid Advertising indicates that although it may attract a large number of leads, only few of these convert into customers.
+# It is beneficial to invest more in referral programs and social media campaigns to further improve conversion rates.
+# The conversion rate of email marketing can be improved by personalized content, better segmentation, and targeted campaigns.
+# There is a need to reassess paid advertising strategy to improve its effectiveness.
