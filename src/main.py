@@ -127,7 +127,7 @@ fig.write_image("../output/roi_by_channel.png")
 
 #Customer Lifetime Value by Channel
 
-data['cltv'] = (data['revenue'] - data['cost']) * (data['conversion_rate'] / data['revenue']) * 100
+data['cltv'] = (data['revenue'] - data['cost']) * (data['conversion_rate'] / data['cost'])
 
 cltv_by_channel = data.groupby('channel')['cltv'].mean().reset_index()
 
@@ -143,7 +143,31 @@ fig.write_image("../output/cltv_by_channel.png")
 
 #COMMENT: Customer lifetime value by channel:
 # CLTV is a ratio that considers how effectively costs are turned into revenue over time.
-# The CLTV indicates that for every dollar spent, email marketing generates approximately $4.37 in customer lifetime value which tells us that email marketing is a cost-effective channel with a good balance of revenue generation and conversion rate.
-# For every dollar spent, paid advertising generates approximately $1.61 in customer lifetime value which tells us paid advertising is less efficient in converting costs into long-term value. There is a need for optimization in this channel.
-# Referral marketing generates approximately $12.26 in customer lifetime value for every dollar spent which reflects the strong performance of referrals in terms of converting costs into substantial long-term value.
-# Social media generates approximately $16.68 in customer lifetime value for every dollar spent which is the highest CLTV among all channels. This tell us that social media is extremely efficient in converting marketing spend into long-term customer value.
+# The CLTV indicates that for every dollar spent, email marketing generates approximately $23.56 in customer lifetime value which tells us that email marketing is a cost-effective channel with a good balance of revenue generation and conversion rate.
+# For every dollar spent, paid advertising generates approximately $1.50 in customer lifetime value which tells us paid advertising is less efficient in converting costs into long-term value. There is a need for optimization in this channel.
+# Referral marketing generates approximately $40.60 in customer lifetime value for every dollar spent which reflects the strong performance of referrals in terms of converting costs into substantial long-term value.
+# Social media generates approximately $46.58 in customer lifetime value for every dollar spent which is the highest CLTV among all channels. This tell us that social media is extremely efficient in converting marketing spend into long-term customer value.
+
+#CLTV distribution
+
+subset = data.loc[data['channel'].isin(['social media', 'referral'])]
+
+print(subset)
+
+fig = px.box(subset,
+             x = "channel",
+             y = "cltv",
+             title = "CLTV Distribution by Channel",
+             labels = {"channel": "Channel", "cltv": "CLTV"})
+
+fig.update_xaxes(title='Channel')
+fig.update_yaxes(title='CLTV')
+fig.update_layout(legend_title='Channel')
+
+fig.show()
+
+fig.write_image("../output/cltv_distribution_analysis.png")
+
+#COMMENT: CLTV distribution for the higher CLTV generating channels:
+# The box plot analysis reveals that while both referral and social media channels are effective in generating high CLTV, social media has the potential to generate higher extreme values of CLTV.
+# This variability might stem from the diverse nature of social media campaigns and audiences, leading to a mix of highly valuable and moderately valuable customers.
