@@ -104,6 +104,7 @@ fig.write_image("../output/total_revenue_by_channel.png")
 # Paid Advertising generates $548.396k, making it a significant revenue contributor despite its high CAC and low conversion rate. This justifies its higher CAC as the revenue outweighs the acquisition costs.
 # Social Media generates the lowest revenue at $492.667k, despite having the highest conversion rate indicating that while it is effective at converting leads, the average transaction value might be lower compared to other channels.
 
+#ROI by Channel
 data['roi'] = data['revenue'] / data['cost']
 
 roi_by_channel = data.groupby('channel')['roi'].mean().reset_index()
@@ -124,3 +125,25 @@ fig.write_image("../output/roi_by_channel.png")
 # Referral marketing generates 330.69 times the cost incurred, indicating it is a very profitable channel because of the high conversion rate, suggesting that referrals are an efficient means of customer acquisition.
 # Social media generates 278.96 times the cost incurred, which is a significant profit. Despite generating the least revenue, the high conversion rate helps in maintaining a strong ROI which is indicative of effective cost utilization in this channel.
 
+#Customer Lifetime Value by Channel
+
+data['cltv'] = (data['revenue'] - data['cost']) * (data['conversion_rate'] / data['revenue']) * 100
+
+cltv_by_channel = data.groupby('channel')['cltv'].mean().reset_index()
+
+fig = px.bar(cltv_by_channel,
+             x = "channel",
+             y = "cltv",
+             title = "Customer Lifetime Value by Channel",
+             labels = {"cltv": "Customer Lifetime Value", "channel": "Channel"})
+
+fig.show()
+
+fig.write_image("../output/cltv_by_channel.png")
+
+#COMMENT: Customer lifetime value by channel:
+# CLTV is a ratio that considers how effectively costs are turned into revenue over time.
+# The CLTV indicates that for every dollar spent, email marketing generates approximately $4.37 in customer lifetime value which tells us that email marketing is a cost-effective channel with a good balance of revenue generation and conversion rate.
+# For every dollar spent, paid advertising generates approximately $1.61 in customer lifetime value which tells us paid advertising is less efficient in converting costs into long-term value. There is a need for optimization in this channel.
+# Referral marketing generates approximately $12.26 in customer lifetime value for every dollar spent which reflects the strong performance of referrals in terms of converting costs into substantial long-term value.
+# Social media generates approximately $16.68 in customer lifetime value for every dollar spent which is the highest CLTV among all channels. This tell us that social media is extremely efficient in converting marketing spend into long-term customer value.
