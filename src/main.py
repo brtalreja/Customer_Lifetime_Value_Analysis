@@ -88,9 +88,39 @@ fig.show()
 
 fig.write_image("../output/revenue_by_channel.png")
 
+fig = px.pie(revenue_by_channel,
+            names = "channel",
+            values = "revenue",
+            title = "Total Revenue by Channel",
+            hole = 0.6, color_discrete_sequence=px.colors.qualitative.Pastel)
+
+fig.show()
+
+fig.write_image("../output/total_revenue_by_channel.png")
+
 #COMMENT: Revenue generated and its efficieny is as follows:
 # Email Marketing generates the highest revenue at $604.706k, indicating it is the most effective channel in terms of revenue generation. Given its low CAC and reasonable conversion rate, it likely provides a strong return on investment (ROI).
 # Referral also shows strong revenue generation of $569.552k which aligns with its high conversion rate. It indicates that referred customers not only convert at a higher rate but also contribute significantly to revenue.
 # Paid Advertising generates $548.396k, making it a significant revenue contributor despite its high CAC and low conversion rate. This justifies its higher CAC as the revenue outweighs the acquisition costs.
 # Social Media generates the lowest revenue at $492.667k, despite having the highest conversion rate indicating that while it is effective at converting leads, the average transaction value might be lower compared to other channels.
+
+data['roi'] = data['revenue'] / data['cost']
+
+roi_by_channel = data.groupby('channel')['roi'].mean().reset_index()
+
+fig = px.bar(roi_by_channel,
+             x = "channel",
+             y = "roi",
+             title = "Return on Investment (ROI) by Channel",
+             labels = {"roi": "Return on Investment", "channel": "Channel"})
+
+fig.show()
+
+fig.write_image("../output/roi_by_channel.png")
+
+#COMMENT: ROI analysis per channel:
+# Email marketing generates 538.62 times the cost incurred, indicating it is highly cost-effective and profitable suggesting that email marketing yields substantial revenue for every dollar spent, making it an excellent investment for the business.
+# Paid advertising generates 92.83 times the cost incurred, which is the lowest among the channels, however still indicates positive returns based on its high CAC and lower conversion rate, the ROI suggests there is room for optimization to increase its cost-effectiveness.
+# Referral marketing generates 330.69 times the cost incurred, indicating it is a very profitable channel because of the high conversion rate, suggesting that referrals are an efficient means of customer acquisition.
+# Social media generates 278.96 times the cost incurred, which is a significant profit. Despite generating the least revenue, the high conversion rate helps in maintaining a strong ROI which is indicative of effective cost utilization in this channel.
 
