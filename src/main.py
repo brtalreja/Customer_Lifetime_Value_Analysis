@@ -152,8 +152,6 @@ fig.write_image("../output/cltv_by_channel.png")
 
 subset = data.loc[data['channel'].isin(['social media', 'referral'])]
 
-print(subset)
-
 fig = px.box(subset,
              x = "channel",
              y = "cltv",
@@ -171,3 +169,44 @@ fig.write_image("../output/cltv_distribution_analysis.png")
 #COMMENT: CLTV distribution for the higher CLTV generating channels:
 # The box plot analysis reveals that while both referral and social media channels are effective in generating high CLTV, social media has the potential to generate higher extreme values of CLTV.
 # This variability might stem from the diverse nature of social media campaigns and audiences, leading to a mix of highly valuable and moderately valuable customers.
+
+# Cost per Conversion by Channel
+
+data['cost_per_conversion'] = data['cost'] / (data['conversion_rate'] * data['cost'])
+
+cost_per_conversion_by_channel = data.groupby('channel')['cost_per_conversion'].mean().reset_index()
+
+fig = px.bar(cost_per_conversion_by_channel,
+             x = "channel",
+             y = "cost_per_conversion",
+             title = "Cost per Conversion by Channel",
+             labels = {"cost_per_conversion": "Cost per Conversion", "channel": "Channel"})
+
+fig.show()
+
+fig.write_image("../output/cost_per_conversion_by_channel.png")
+
+#COMMENT: 
+# Social media and referral channels are great for customer acquisition, as they provide the lowest cost per conversion.
+# Optimization strategies should be looked into for paid advertising campaigns to reduce the cost per conversion or the budget should be reallocated to more cost-effective channels like social media and referral.
+
+# Revenue per Conversion by Channel
+
+data['revenue_per_conversion'] = data['revenue'] / (data['conversion_rate'] * data['cost'])
+
+revenue_per_conversion_by_channel = data.groupby('channel')['revenue_per_conversion'].mean().reset_index()
+
+fig = px.bar(revenue_per_conversion_by_channel,
+             x = "channel",
+             y = "revenue_per_conversion",
+             title = "Revenue per Conversion by Channel",
+             labels = {"revenue_per_conversion": "Revenue per Conversion", "channel": "Channel"})
+
+fig.show()
+
+fig.write_image("../output/revenue_per_conversion_by_channel.png")
+
+#COMMENT: 
+# While social media and referral channels are cost-effective for acquiring customers, the revenue generated per conversion is lower compared to email marketing and paid advertising so strategies to increase the average transaction value for customers acquired through social media and referral should be considered.
+# Email marketing is highly effective in generating revenue per conversion so the investment should be continued in this channel and optimization strategies to get even higher returns should be looked into.
+# Paid advertising strategies should be evaluated to ensure that the high cost per conversion is justified by the revenue generated.
